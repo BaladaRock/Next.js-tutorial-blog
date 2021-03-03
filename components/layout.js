@@ -33,8 +33,8 @@ const Layout = ({ children, home }) => {
               priority
               src="/../public/profile_picture.jpg"
               className={utilStyles.borderCircle}
-              height={400}
-              width={300}
+              height={250}
+              width={225}
               alt={imageText}
             />
             <h1 className={utilStyles.heading2Xl}>{name}</h1>
@@ -47,8 +47,8 @@ const Layout = ({ children, home }) => {
                   priority
                   src="/../public/profile_picture.jpg"
                   className={utilStyles.borderCircle}
-                  height={400}
-                  width={300}
+                  height={250}
+                  width={225}
                   alt={imageText}
                 />
               </a>
