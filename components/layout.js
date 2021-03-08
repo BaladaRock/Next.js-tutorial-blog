@@ -31,7 +31,7 @@ const Layout = ({ children, home }) => {
           <>
             <Image
               priority
-              src="/../public/images/profile_picture.jpg"
+              src="/images/profile_picture.jpg"
               className={utilStyles.borderCircle}
               height={250}
               width={225}
@@ -45,7 +45,7 @@ const Layout = ({ children, home }) => {
               <a>
                 <Image
                   priority
-                  src="/../public/images/profile_picture.jpg"
+                  src="/images/profile_picture.jpg"
                   className={utilStyles.borderCircle}
                   height={250}
                   width={225}
