@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/layout";
+import Link from "next/link";
 import utilStyles from "../styles/utils.module.css";
 // use posts object by importing the function which
 // reads posts content from their files
@@ -28,18 +29,21 @@ export default function Home({ sortedPosts }) {
         </p>
       </section>
       {
-        //The bellow section renders all the posts data
+        // The following section renders all the posts data.
+        // It also uses the NextJS "Link" component to connect each post with the home page.
       }
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <ul className={utilStyles.list}>
           {sortedPosts.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
-              {title}
+              <Link href={`/posts/${id}`}>
+                <a>{title}</a>
+              </Link>
               <br />
-              {id}
-              <br />
-              {date}
+              <small className={utilStyles.lightText}>
+                <Date dateString={date} />
+              </small>
             </li>
           ))}
         </ul>
