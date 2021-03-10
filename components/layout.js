@@ -1,11 +1,10 @@
 import Head from "next/head";
-import Image from "next/image";
+import ProfileImage from "./image";
 import styles from "../styles/layout.module.css";
 import utilStyles from "../styles/utils.module.css";
 import Link from "next/link";
 
 const name = "Andrei";
-const imageText = "Dunarea la Orsova";
 export const siteTitle = "Next.js Sample Website";
 
 const Layout = ({ children, home }) => {
@@ -29,28 +28,14 @@ const Layout = ({ children, home }) => {
       <header className={styles.header}>
         {home ? (
           <>
-            <Image
-              priority
-              src="/images/profile_picture.jpg"
-              className={utilStyles.borderCircle}
-              height={250}
-              width={225}
-              alt={imageText}
-            />
+            <ProfileImage />
             <h1 className={utilStyles.heading2Xl}>{name}</h1>
           </>
         ) : (
           <>
             <Link href="/">
               <a>
-                <Image
-                  priority
-                  src="/images/profile_picture.jpg"
-                  className={utilStyles.borderCircle}
-                  height={250}
-                  width={225}
-                  alt={imageText}
-                />
+                <ProfileImage />
               </a>
             </Link>
             <h2 className={utilStyles.headingLg}>
