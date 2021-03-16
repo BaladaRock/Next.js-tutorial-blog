@@ -4,7 +4,7 @@ import { useState } from "react";
 
 // Test the apolloclient <=> database flow
 const myQuery = gql`
-  query users {
+  query {
     user {
       _id
       created_at
@@ -39,7 +39,7 @@ const LoginForm = () => {
           <input
             type="text"
             name="name"
-            onChange={changeFormHandler}
+            onLoad={changeFormHandler}
             value={query}
           />
         </label>
