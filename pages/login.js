@@ -17,7 +17,9 @@ const myQuery = gql`
   }
 `;
 
-console.log(myQuery);
+const authenticateUser = () => {
+  // Create an email/password credential
+};
 
 const LoginForm = () => {
   const router = useRouter();
@@ -28,23 +30,25 @@ const LoginForm = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-  if (error || !data) {
+  /*if (error || !data) {
     console.error(error);
     return <div>Error...</div>;
-  }
+  }*/
 
   const changeFormHandler = (event) => {
     setQuery(event.target.value);
   };
 
-  const redirectToHome = (event) => {
-    console.log(event);
+  const redirectToHome = (form) => {
+    console.log(form);
     router.push("/");
+    //authenticateUser();
   };
 
   return (
     <div className={formStyles.form}>
-      <form onSubmit={handleSubmit(redirectToHome)}>
+      <span>{JSON.stringify(query)}</span>
+      <form onSubmit={(handleSubmit(redirectToHome), changeFormHandler)}>
         <label>
           Enter user name:
           <input type="text" name="name" ref={register()} />
