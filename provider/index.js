@@ -1,6 +1,6 @@
-import { RealmProvider } from "./services/realm";
-import { ApolloProvider } from "./services/Apollo";
-import { CacheProvider } from "./services/cache";
+import { RealmProvider } from "../services/Realm";
+import { ApolloProvider } from "../services/Apollo";
+import { CacheProvider } from "../services/Cache";
 
 const Providers = ({ args, children }) => {
   return (

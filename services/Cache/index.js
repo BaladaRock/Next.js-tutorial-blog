@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import client from "./helpers";
+import realmClient from "../Realm/realmClient";
 
 // Create the cache context.
 const CacheContext = createContext();
@@ -7,7 +7,9 @@ const CacheContext = createContext();
 // Create the cache provider.
 const CacheProvider = ({ children }) => {
   return (
-    <CacheContext.Provider value={client()}>{children}</CacheContext.Provider>
+    <CacheContext.Provider value={realmClient()}>
+      {children}
+    </CacheContext.Provider>
   );
 };
 

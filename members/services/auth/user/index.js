@@ -4,9 +4,9 @@ import { useRealm } from "services/Realm";
 import sanitizeUserData from "./helpers/sanitizeUserData";
 
 const client = () => {
+  const { app, credentials } = useRealm();
   const [user, setUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(app.currentUser || false);
-  const { app, credentials } = useRealm();
   const [isAuthenticated, setIsAuthenticated] = useState(user ? true : false);
 
   // Get the Auth0 variables from the hook.

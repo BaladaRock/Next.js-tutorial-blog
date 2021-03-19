@@ -1,16 +1,25 @@
-//Add global style
+// Add global style
 import "../styles/global.css";
-//Import the ApolloClient
-import useApollo from "../lib/apolloClient";
-import { ApolloProvider } from "@apollo/client";
+// Provide the backend and User model wrappers
+import Members from "members/provider";
+import Providers from "provider";
 
 const App = ({ Component, pageProps }) => {
-  const apolloClient = useApollo(pageProps.initialApolloState);
-
   return (
-    <ApolloProvider client={apolloClient}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <Providers
+      args={{
+        realm: {
+          appId: process.env.NEXT_PUBLIC_APP_ID,
+        },
+        apollo: {
+          state: pageProps.initialApolloState,
+        },
+      }}
+    >
+      <Members>
+        <Component {...pageProps} />
+      </Members>
+    </Providers>
   );
 };
 

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useRealm } from "../Realm";
 import { ApolloProvider as ApolloProviderClient } from "@apollo/client";
 
-import createApolloClient from "./functions/createApolloClient";
+import createApolloClient from "./helpers/createApolloClient";
 
 const ApolloProvider = ({ apollo, children }) => {
   const { app } = useRealm();

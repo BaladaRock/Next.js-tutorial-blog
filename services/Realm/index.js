@@ -2,11 +2,9 @@ import { createContext, useContext } from "react";
 import client from "./realmClient";
 
 // Create the Realm context.
-
 const RealmContext = createContext();
 
 // Create the Realm provider.
-
 const RealmProvider = ({ appId, children }) => {
   return (
     <RealmContext.Provider value={client({ appId })}>
@@ -16,7 +14,6 @@ const RealmProvider = ({ appId, children }) => {
 };
 
 // Create the Realm hook.
-
 const useRealm = () => {
   const context = useContext(RealmContext);
 

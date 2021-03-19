@@ -3,6 +3,7 @@ import { gql, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
 import { Router, useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import Members from "members/provider";
 
 // Test the ApolloClient <=> database flow
 const myQuery = gql`
@@ -46,20 +47,22 @@ const LoginForm = () => {
   };
 
   return (
-    <div className={formStyles.form}>
-      <span>{JSON.stringify(query)}</span>
-      <form onSubmit={(handleSubmit(redirectToHome), changeFormHandler)}>
-        <label>
-          Enter email:
-          <input type="text" name="email" ref={register()} />
-        </label>
-        <label>
-          Enter password:
-          <input type="text" name="password" ref={register()} />
-        </label>
-        <input type="submit" value="Log in" />
-      </form>
-    </div>
+    <Members>
+      <div className={formStyles.form}>
+        <span>{JSON.stringify(query)}</span>
+        <form onSubmit={(handleSubmit(redirectToHome), changeFormHandler)}>
+          <label>
+            Enter email:
+            <input type="text" name="email" ref={register()} />
+          </label>
+          <label>
+            Enter password:
+            <input type="text" name="password" ref={register()} />
+          </label>
+          <input type="submit" value="Log in" />
+        </form>
+      </div>
+    </Members>
   );
 };
 

@@ -10,7 +10,7 @@ const realmClient = ({ appId }) => {
   }, [appId]);
 
   // Generate auth credentials for the Realm app.
-  const credentials = async () => {
+  const credentials = async (email, password) => {
     return Realm.Credentials.emailPassword(email, password);
   };
 

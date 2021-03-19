@@ -1,28 +1,17 @@
-/**
- * Providers & Hooks
- */
-
 //* Providers
 
-import DestackedMembers from './provider';
+import Members from "./provider";
 
 //* Hooks
 
-import { useAuth, requireAuth } from './services/auth';
+import { useAuth, requireAuth } from "./services/auth";
 
-//* Export
+//* Authentication components
 
-export { DestackedMembers, useAuth, requireAuth };
-
-/**
- * Components
- */
-
-//* Authentication
-
-import LoginButton from './components/auth/login/LoginButton';
-import LogoutButton from './components/auth/logout/LogoutButton';
+import LoginButton from "./components/auth/login/LoginButton";
+import LogoutButton from "./components/auth/logout/LogoutButton";
 
 //* Export
 
 export { LoginButton, LogoutButton };
+export { Members, useAuth, requireAuth };
