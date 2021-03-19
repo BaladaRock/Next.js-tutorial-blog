@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Router, useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import Members from "members/provider";
+import Providers from "provider";
+import { User } from "realm-web";
 
 // Test the ApolloClient <=> database flow
 const myQuery = gql`
@@ -31,10 +33,10 @@ const LoginForm = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-  /*if (error || !data) {
+  if (error || !data) {
     console.error(error);
     return <div>Error...</div>;
-  }*/
+  }
 
   const changeFormHandler = (event) => {
     setQuery(event.target.value);
@@ -43,26 +45,25 @@ const LoginForm = () => {
   const redirectToHome = (form) => {
     console.log(form);
     router.push("/");
+
     //authenticateUser();
   };
 
   return (
-    <Members>
-      <div className={formStyles.form}>
-        <span>{JSON.stringify(query)}</span>
-        <form onSubmit={(handleSubmit(redirectToHome), changeFormHandler)}>
-          <label>
-            Enter email:
-            <input type="text" name="email" ref={register()} />
-          </label>
-          <label>
-            Enter password:
-            <input type="text" name="password" ref={register()} />
-          </label>
-          <input type="submit" value="Log in" />
-        </form>
-      </div>
-    </Members>
+    <div className={formStyles.form}>
+      <span>{JSON.stringify(query)}</span>
+      <form onSubmit={(handleSubmit(redirectToHome), changeFormHandler)}>
+        <label>
+          Enter email:
+          <input type="text" name="email" ref={register()} />
+        </label>
+        <label>
+          Enter password:
+          <input type="text" name="password" ref={register()} />
+        </label>
+        <input type="submit" value="Log in" />
+      </form>
+    </div>
   );
 };
 
