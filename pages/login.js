@@ -50,10 +50,6 @@ const LoginForm = () => {
       <span>{JSON.stringify(query)}</span>
       <form onSubmit={(handleSubmit(redirectToHome), changeFormHandler)}>
         <label>
-          Enter user name:
-          <input type="text" name="name" ref={register()} />
-        </label>
-        <label>
           Enter email:
           <input type="text" name="email" ref={register()} />
         </label>
