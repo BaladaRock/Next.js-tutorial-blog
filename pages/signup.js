@@ -51,6 +51,10 @@ const LoginForm = () => {
       {/*<span>{JSON.stringify(query)}</span>*/}
       <form onSubmit={handleSubmit(redirectToHome, authenticateUser)}>
         <label>
+          Enter name:
+          <input type="text" name="name" ref={register()} />
+        </label>
+        <label>
           Enter email:
           <input type="text" name="email" ref={register()} />
         </label>
@@ -58,7 +62,7 @@ const LoginForm = () => {
           Enter password:
           <input type="text" name="password" ref={register()} />
         </label>
-        <input type="submit" value="Log in" />
+        <input type="submit" value="Sign in" />
       </form>
     </div>
   );
