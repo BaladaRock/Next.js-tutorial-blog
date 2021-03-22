@@ -1,8 +1,9 @@
 import formStyles from "../styles/form.module.css";
 import { gql, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Router, useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { useAuth } from "members";
 import Members from "members/provider";
 import Providers from "provider";
 import { User } from "realm-web";
@@ -20,13 +21,11 @@ const myQuery = gql`
   }
 `;
 
-const authenticateUser = () => {
-  // Create an email/password credential
-};
-
 const LoginForm = () => {
   const router = useRouter();
-  const [query, setQuery] = useState(null);
+  const { user, login } = useAuth();
+
+  // const [query, setQuery] = useState(null);
   const { loading, error, data } = useQuery(myQuery);
   const { handleSubmit, register } = useForm();
 
@@ -38,21 +37,23 @@ const LoginForm = () => {
     return <div>Error...</div>;
   }
 
-  const changeFormHandler = (event) => {
-    setQuery(event.target.value);
+  const authenticateUser = (form) => {
+    login(form.email, form.password);
   };
 
   const redirectToHome = (form) => {
     console.log(form);
     router.push("/");
-
-    //authenticateUser();
   };
 
   return (
     <div className={formStyles.form}>
-      <span>{JSON.stringify(query)}</span>
-      <form onSubmit={(handleSubmit(redirectToHome), changeFormHandler)}>
+      {/*<span>{JSON.stringify(query)}</span>*/}
+      <form
+        onSubmit={
+          (handleSubmit(redirectToHome), handleSubmit(authenticateUser))
+        }
+      >
         <label>
           Enter email:
           <input type="text" name="email" ref={register()} />

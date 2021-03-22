@@ -5,7 +5,7 @@ import sanitizeUserData from "./helpers/sanitizeUserData";
 
 const client = () => {
   const { app, credentials } = useRealm();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({ name: "Andrei" });
   const [currentUser, setCurrentUser] = useState(app.currentUser || false);
   const [isAuthenticated, setIsAuthenticated] = useState(user ? true : false);
 
