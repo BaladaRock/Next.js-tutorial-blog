@@ -6,6 +6,7 @@ const RealmContext = createContext();
 
 // Create the Realm provider.
 const RealmProvider = ({ appId, children }) => {
+  console.log(appId);
   return (
     <RealmContext.Provider value={client({ appId })}>
       {children}

@@ -2,7 +2,7 @@ import createApolloClient from "./createApolloClient";
 
 let apolloClient;
 
-const initializeApollo = (initialState = null, app) => {
+const initializeApollo = (initialState = null) => {
   const _apolloClient = apolloClient ?? createApolloClient();
 
   if (initialState) {

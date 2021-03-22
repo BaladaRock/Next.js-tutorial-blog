@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import * as Realm from "realm-web";
 
-const realmClient = ({ appId }) => {
+const realmClient = () => {
+  const appId = process.env.NEXT_PUBLIC_APP_ID;
   const [app, setApp] = useState(new Realm.App(appId));
 
   // Update the app if the appId changes.
