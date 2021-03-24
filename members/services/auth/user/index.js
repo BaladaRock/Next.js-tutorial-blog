@@ -59,12 +59,21 @@ const client = () => {
     }
   };
 
+  const confirm = async (token, tokenId) => {
+    try {
+      await app.emailPasswordAuth.confirmUser(token, tokenId);
+    } catch (e) {
+      throw e;
+    }
+  };
+
   return {
     user,
     currentUser,
     login,
     logout,
     signup,
+    confirm,
   };
 };
 

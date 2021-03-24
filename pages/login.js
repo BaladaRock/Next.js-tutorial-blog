@@ -8,24 +8,10 @@ import Members from "members/provider";
 import Providers from "provider";
 import { User } from "realm-web";
 
-// Test the ApolloClient <=> database flow
-const myQuery = gql`
-  query {
-    user {
-      _id
-      created_at
-      email
-      name
-      password
-    }
-  }
-`;
-
 const LoginForm = () => {
   const router = useRouter();
-  const { user, login } = useAuth();
+  const { login } = useAuth();
 
-  // const [query, setQuery] = useState(null);
   const { loading, error, data } = useQuery(myQuery);
   const { handleSubmit, register } = useForm();
 
@@ -38,9 +24,8 @@ const LoginForm = () => {
   }
 
   const authenticateAndRedirect = (form) => {
-    console.log(form);
-    login(form.email, form.password);
     console.log(form.email, form.password);
+    login(form.email, form.password);
     router.push("/");
   };
 

@@ -1,4 +1,4 @@
-import formStyles from "../styles/form.module.css";
+import formStyles from "styles/form.module.css";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState, useContext } from "react";
 import { Router, useRouter } from "next/router";
@@ -11,7 +11,7 @@ import { User } from "realm-web";
 const SignUpForm = () => {
   const router = useRouter();
   const { handleSubmit, register } = useForm();
-  const { user, login, signup } = useAuth();
+  const { user, login, signup, confirm } = useAuth();
 
   //   const createQuery = gql`
   //     mutation insertOneUser($data: UserInsertInput!) {
@@ -41,18 +41,9 @@ const SignUpForm = () => {
   //     useMutation(createQuery);
 
   //   };
-  const signUpAndRedirect = (form) => {
+  const signUpAndRedirect = async (form) => {
     signup(form.email, form.password);
-    router.push("/confirm");
-    login;
-    // createNewRealmUser(form.name, form.email, form.password);
-    //login(form.email, form.password);
-    console.log(form.email, form.password);
     router.push("/");
-    // insertOneUser({
-    //     password: form.password,
-
-    // })
   };
 
   return (
