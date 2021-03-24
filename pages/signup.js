@@ -1,5 +1,5 @@
 import formStyles from "../styles/form.module.css";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState, useContext } from "react";
 import { Router, useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -8,64 +8,72 @@ import Members from "members/provider";
 import Providers from "provider";
 import { User } from "realm-web";
 
-// Test the ApolloClient <=> database flow
-const myQuery = gql`
-  query {
-    user {
-      _id
-      created_at
-      email
-      name
-      password
-    }
-  }
-`;
-
-const LoginForm = () => {
+const SignUpForm = () => {
   const router = useRouter();
-  const { user, login } = useAuth();
-
-  // const [query, setQuery] = useState(null);
-  const { loading, error, data } = useQuery(myQuery);
   const { handleSubmit, register } = useForm();
+  const { user, login, signup } = useAuth();
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  if (error || !data) {
-    console.error(error);
-    return <div>Error...</div>;
-  }
+  //   const createQuery = gql`
+  //     mutation insertOneUser($data: UserInsertInput!) {
+  //       insertOneUser(data: $data) {
+  //         _id
+  //         name
+  //         email
+  //         user_id
+  //       }
+  //     }
+  //   `;
 
-  const authenticateUser = (form) => {
-    login(form.email, form.password);
-  };
+  //   const [insertOneUser] = useMutation(createQuery);
 
-  const redirectToHome = (form) => {
-    console.log(form);
+  //   const createNewRealmUser = (name, email, password) => {
+  //     const createQuery = gql`
+  //       mutation insertOneUser($data: UserInsertInput!) {
+  //         insertOneUser(data: $data) {
+  //           _id
+  //           name
+  //           email
+  //           user_id
+  //         }
+  //       }
+  //     `;
+
+  //     useMutation(createQuery);
+
+  //   };
+  const signUpAndRedirect = (form) => {
+    signup(form.email, form.password);
+    router.push("/confirm");
+    login;
+    // createNewRealmUser(form.name, form.email, form.password);
+    //login(form.email, form.password);
+    console.log(form.email, form.password);
     router.push("/");
+    // insertOneUser({
+    //     password: form.password,
+
+    // })
   };
 
   return (
     <div className={formStyles.form}>
-      {/*<span>{JSON.stringify(query)}</span>*/}
-      <form onSubmit={handleSubmit(redirectToHome, authenticateUser)}>
+      <form onSubmit={handleSubmit(signUpAndRedirect)}>
         <label>
-          Enter name:
+          User name:
           <input type="text" name="name" ref={register()} />
         </label>
         <label>
-          Enter email:
+          User email:
           <input type="text" name="email" ref={register()} />
         </label>
         <label>
-          Enter password:
+          Choose password:
           <input type="text" name="password" ref={register()} />
         </label>
-        <input type="submit" value="Sign in" />
+        <input type="submit" value="Sign up" />
       </form>
     </div>
   );
 };
 
-export default LoginForm;
+export default SignUpForm;

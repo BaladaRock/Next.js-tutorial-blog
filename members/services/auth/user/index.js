@@ -50,11 +50,21 @@ const client = () => {
     }
   };
 
+  const signup = async (email, password) => {
+    try {
+      await app.emailPasswordAuth.registerUser(email, password);
+      // await app.emailPasswordAuth.resendConfirmation(email);
+    } catch (e) {
+      throw e;
+    }
+  };
+
   return {
     user,
     currentUser,
     login,
     logout,
+    signup,
   };
 };
 

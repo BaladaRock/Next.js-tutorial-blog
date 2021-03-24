@@ -1,4 +1,4 @@
-import formStyles from "../styles/form.module.css";
+import formStyles from "styles/form.module.css";
 import { gql, useQuery } from "@apollo/client";
 import { useEffect, useState, useContext } from "react";
 import { Router, useRouter } from "next/router";
@@ -37,19 +37,17 @@ const LoginForm = () => {
     return <div>Error...</div>;
   }
 
-  const authenticateUser = (form) => {
-    login(form.email, form.password);
-  };
-
-  const redirectToHome = (form) => {
+  const authenticateAndRedirect = (form) => {
     console.log(form);
+    login(form.email, form.password);
+    console.log(form.email, form.password);
     router.push("/");
   };
 
   return (
     <div className={formStyles.form}>
       {/*<span>{JSON.stringify(query)}</span>*/}
-      <form onSubmit={handleSubmit(redirectToHome, authenticateUser)}>
+      <form onSubmit={handleSubmit(authenticateAndRedirect)}>
         <label>
           Enter email:
           <input type="text" name="email" ref={register()} />
