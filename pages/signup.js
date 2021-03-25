@@ -4,9 +4,6 @@ import { useEffect, useState, useContext } from "react";
 import { Router, useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useAuth } from "members";
-import Members from "members/provider";
-import Providers from "provider";
-import { User } from "realm-web";
 
 const SignUpForm = () => {
   const router = useRouter();
@@ -41,7 +38,7 @@ const SignUpForm = () => {
   //     useMutation(createQuery);
 
   //   };
-  const signUpAndRedirect = async (form) => {
+  const signUpAndRedirect = (form) => {
     signup(form.email, form.password);
     router.push("/");
   };

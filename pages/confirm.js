@@ -6,14 +6,21 @@ import redirectStyles from "styles/redirect.module.css";
 
 const Confirm = () => {
   const router = useRouter();
-  const { confirm, login } = useAuth();
+  const { confirm } = useAuth();
+  const onConfirm = async (token, tokenId) => {
+    try {
+      await confirm(token, tokenId);
+
+      router.push("/login");
+    } catch (e) {
+      throw e;
+    }
+  };
   useEffect(() => {
     const token = router.query.token;
     const tokenId = router.query.tokenId;
-
     if (token && tokenId) {
-      confirm(token, tokenId);
-      login;
+      onConfirm(token, tokenId);
     }
   }, [router]);
 

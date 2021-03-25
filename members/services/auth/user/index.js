@@ -5,7 +5,7 @@ import sanitizeUserData from "./helpers/sanitizeUserData";
 
 const client = () => {
   const { app, credentials } = useRealm();
-  const [user, setUser] = useState({ name: "Andrei" });
+  const [user, setUser] = useState(null);
   const [currentUser, setCurrentUser] = useState(app.currentUser || false);
   const [isAuthenticated, setIsAuthenticated] = useState(user ? true : false);
 
@@ -14,7 +14,7 @@ const client = () => {
   // Update the sanitized user object when the current user changes.
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (user && user.id === currentUser.id) {
       setUser(sanitizeUserData(currentUser));
 
       return () => setUser(null);
@@ -61,7 +61,11 @@ const client = () => {
 
   const confirm = async (token, tokenId) => {
     try {
-      await app.emailPasswordAuth.confirmUser(token, tokenId);
+      const confirmation = await app.emailPasswordAuth.confirmUser(
+        token,
+        tokenId
+      );
+      return confirmation;
     } catch (e) {
       throw e;
     }

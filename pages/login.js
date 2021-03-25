@@ -12,16 +12,7 @@ const LoginForm = () => {
   const router = useRouter();
   const { login } = useAuth();
 
-  const { loading, error, data } = useQuery(myQuery);
   const { handleSubmit, register } = useForm();
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  if (error || !data) {
-    console.error(error);
-    return <div>Error...</div>;
-  }
 
   const authenticateAndRedirect = (form) => {
     console.log(form.email, form.password);
