@@ -53,6 +53,8 @@ const client = () => {
   const signup = async (email, password) => {
     try {
       await app.emailPasswordAuth.registerUser(email, password);
+      // use the 'resendConfiramtion(email)' method if you want to
+      // resend confirmation email after a period of time
       // await app.emailPasswordAuth.resendConfirmation(email);
     } catch (e) {
       throw e;

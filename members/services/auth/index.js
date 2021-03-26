@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
-import client from "./user";
+import client from "./user/clientAuth";
+import firebaseClient from "./user/firebaseAuth";
 
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
