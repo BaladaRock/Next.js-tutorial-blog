@@ -4,7 +4,7 @@ import Link from "next/link";
 import utilStyles from "../styles/utils.module.css";
 // use posts object by importing the function which
 // reads posts content from their files
-import { getSortedPostsData } from "../lib/posts";
+import { getSortedPostsData } from "../util/posts";
 
 export async function getStaticProps() {
   const sortedPosts = getSortedPostsData();

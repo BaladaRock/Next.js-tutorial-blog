@@ -10,34 +10,6 @@ const SignUpForm = () => {
   const { handleSubmit, register } = useForm();
   const { user, login, signup, confirm } = useAuth();
 
-  //   const createQuery = gql`
-  //     mutation insertOneUser($data: UserInsertInput!) {
-  //       insertOneUser(data: $data) {
-  //         _id
-  //         name
-  //         email
-  //         user_id
-  //       }
-  //     }
-  //   `;
-
-  //   const [insertOneUser] = useMutation(createQuery);
-
-  //   const createNewRealmUser = (name, email, password) => {
-  //     const createQuery = gql`
-  //       mutation insertOneUser($data: UserInsertInput!) {
-  //         insertOneUser(data: $data) {
-  //           _id
-  //           name
-  //           email
-  //           user_id
-  //         }
-  //       }
-  //     `;
-
-  //     useMutation(createQuery);
-
-  //   };
   const signUpAndRedirect = (form) => {
     signup(form.email, form.password);
     router.push("/");

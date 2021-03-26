@@ -1,11 +1,12 @@
 import { createContext, useContext } from "react";
-import client from "./user/clientAuth";
 import firebaseClient from "./user/firebaseAuth";
 
 const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   return (
-    <AuthContext.Provider value={client()}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={firebaseClient()}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

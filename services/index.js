@@ -1,4 +1,4 @@
-import Provider from "../provider";
+import Provider from "provider";
 import { useCache } from "./Cache";
 import { useRealm } from "./Realm";
 import { useQuery, useLazyQuery, useMutation, gql } from "@apollo/client";
