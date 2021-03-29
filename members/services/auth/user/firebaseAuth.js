@@ -28,28 +28,20 @@ const firebaseClient = () => {
 
   const login = async (email, password) => {
     try {
-      const userCredentials = await credentials(email, password);
-      await app.logIn(userCredentials);
-
-      setCurrentUser(app.currentUser);
-      setIsAuthenticated(true);
+      firebase.auth().signInWithEmailAndPassword(email, password);
+      setUser(firebase.auth().currentUser);
     } catch (e) {
-      throw e;
+      console.log(error.message);
     }
   };
 
   const logout = async () => {
     try {
-      setUser(null);
-
-      // Sign out from Realm and Auth0.
-      await app.currentUser?.logOut();
-      // Update the user objects.
-      setCurrentUser(app.currentUser);
+      firebase.auth().signOut();
       setIsAuthenticated(false);
-      setUser(false);
+      setUser(null);
     } catch (e) {
-      throw e;
+      console.log(error.message);
     }
   };
 
@@ -58,32 +50,31 @@ const firebaseClient = () => {
       const confirmation = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
-      //handleAuth();
+      await handleAuth();
       return confirmation;
     } catch (e) {
-      throw e;
+      console.log(error.message);
     }
   };
 
   // Handle response from authentication functions
   const handleAuth = async (response) => {
-    const { user, additionalUserInfo } = response;
+    const current = firebase.auth().currentUser;
+    // const { user, additionalUserInfo } = response;
 
     // Ensure Firebase is actually ready before we continue
     await waitForFirebase();
 
-    // Create the user in the database if they are new
-    if (additionalUserInfo.isNewUser) {
-      await createUser(user.uid, { email: user.email });
+    // // Create the user in the database if they are new
+    // if (additionalUserInfo.isNewUser) {
+    //   await createUser(user.uid, { email: user.email });
 
-      // Send email verification if enabled
-      if (EMAIL_VERIFICATION) {
-        firebase.auth().currentUser.sendEmailVerification();
-      }
+    // Send email verification if enabled
+    if (EMAIL_VERIFICATION) {
+      current.sendEmailVerification();
     }
-
     // Update user in state
-    setUser(user);
+    setUser(current);
     return user;
   };
 

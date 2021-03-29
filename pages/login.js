@@ -10,7 +10,7 @@ import { User } from "realm-web";
 
 const LoginForm = () => {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
 
   const { handleSubmit, register } = useForm();
 
@@ -22,7 +22,6 @@ const LoginForm = () => {
 
   return (
     <div className={formStyles.form}>
-      {/*<span>{JSON.stringify(query)}</span>*/}
       <form onSubmit={handleSubmit(authenticateAndRedirect)}>
         <label>
           Enter email:

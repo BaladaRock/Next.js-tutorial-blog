@@ -2,9 +2,11 @@ import Head from "next/head";
 import Layout, { siteTitle } from "../components/layout";
 import Link from "next/link";
 import utilStyles from "../styles/utils.module.css";
+
 // use posts object by importing the function which
 // reads posts content from their files
 import { getSortedPostsData } from "../util/posts";
+import { useAuth } from "members";
 
 export async function getStaticProps() {
   const sortedPosts = getSortedPostsData();
@@ -16,12 +18,19 @@ export async function getStaticProps() {
 }
 
 export default function Home({ sortedPosts }) {
+  const { user } = useAuth();
+
   return (
     <Layout home>
       <Head>
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
+        {user ? (
+          <span>Current user is: {user.email}</span>
+        ) : (
+          <span> No user</span>
+        )}
         <p>Hi, I'm Andrei! Here is my first Next.js sample app.</p>
         <p>
           Click here to go to the tutorial's main page{" "}
