@@ -10,7 +10,7 @@ import { User } from "realm-web";
 
 const LoginForm = () => {
   const router = useRouter();
-  const { login, user } = useAuth();
+         const { login} = useAuth();
 
   const { handleSubmit, register } = useForm();
 

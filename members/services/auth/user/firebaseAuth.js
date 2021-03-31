@@ -31,18 +31,15 @@ const firebaseClient = () => {
       firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
           authenticateUsingToken();
-        } else {
-          setUser(false);
-          setIsAuthenticated(false);
         }
       }),
     [currentToken]
   );
 
-  // Check if the current user is null and set state if not
+  // Check if the current user is not null and set state if not
   useEffect(() => {
     const currentUser = firebase.auth().currentUser;
-    if (currentUser && currentUser.getIdToken()) {
+    if (currentUser && !currentUser.getIdToken()) {
       setCurrentToken(currentUser.getIdToken());
     }
   }, []);
@@ -54,7 +51,7 @@ const firebaseClient = () => {
       const confirmation = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
-      setUser(firebase.auth().currentUser);
+      //setUser(firebase.auth().currentUser);
       await handleAuth();
 
       return confirmation;
@@ -90,27 +87,62 @@ const firebaseClient = () => {
 
   // Handle response from authentication functions
   const handleAuth = async (response) => {
-    // Ensure Firebase is actually ready before we continue
-    //await waitForFirebase();
+    //const { user, additionalUserInfo } = response;
 
-    const current = firebase.auth().currentUser;
-    const token = await current.getIdToken();
-    setCurrentToken(token);
-    authenticateUsingToken();
-    // const { user, additionalUserInfo } = response;
+    // Ensure Firebase is actually ready before we continue
+    await waitForFirebase();
+
+    const currentUser = firebase.auth().currentUser;
+
+    // Send email confirmation for new users
+    if (currentUser.isNewUser && EMAIL_VERIFICATION) {
+      currentUser.sendEmailVerification();
+    }
+
+    // Authenticate user
+
+    const user = await authenticateUsingToken();
+    return user;
 
     // // Create the user in the database if they are new
     // if (additionalUserInfo.isNewUser) {
     //   await createUser(user.uid, { email: user.email });
 
-    // Send email verification if enabled
-    if (EMAIL_VERIFICATION && !isAuthenticated) {
-      current.sendEmailVerification();
-    }
-    // Update user in state
-    setUser(current);
-    return user;
+    //   // Send email verification if enabled
+    //   if (EMAIL_VERIFICATION) {
+    //     firebase.auth().currentUser.sendEmailVerification();
+    //   }
+    // }
+
+    // // Update user in state
+    // setUser(user);
+    // setIsAuthenticated(true);
   };
+  // // Handle response from authentication functions
+  // const handleAuth = async (response) => {
+  //   // Ensure Firebase is actually ready before we continue
+  //   await waitForFirebase();
+
+  //   const current = firebase.auth().currentUser;
+  //   const token = await current.getIdToken();
+  //   setCurrentToken(token);
+  //   if (isAuthenticated) {
+  //     authenticateUsingToken();
+  //   }
+  //   // const { user, additionalUserInfo } = response;
+
+  //   // // Create the user in the database if they are new
+  //   // if (additionalUserInfo.isNewUser) {
+  //   //   await createUser(user.uid, { email: user.email });
+
+  //   // Send email verification if enabled
+  //   if (EMAIL_VERIFICATION && !isAuthenticated) {
+  //     current.sendEmailVerification();
+  //   }
+  //   // Update user in state
+  //   setUser(current);
+  //   return user;
+  // };
 
   const authenticateUsingToken = async () => {
     try {
@@ -135,6 +167,19 @@ const firebaseClient = () => {
     } catch (e) {
       throw e;
     }
+  };
+
+  // Waits on Firebase user to be initialized before resolving promise
+  // This is used to ensure auth is ready before any writing to the db can happen
+  const waitForFirebase = () => {
+    return new Promise((resolve) => {
+      const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          resolve(user); // Resolve promise when we have a user
+          unsubscribe(); // Prevent from firing again
+        }
+      });
+    });
   };
 
   return {
