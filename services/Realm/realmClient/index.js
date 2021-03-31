@@ -11,8 +11,25 @@ const realmClient = () => {
   }, [appId]);
 
   // Generate auth credentials for the Realm app.
-  const credentials = async (email, password) => {
-    return Realm.Credentials.emailPassword(email, password);
+  const credentials = async ({ type, value }) => {
+    let payload;
+
+    switch (type) {
+      case "email":
+        payload = Realm.Credentials.emailPassword(value);
+        break;
+
+      case "jwt":
+        payload = Realm.Credentials.jwt(value);
+        break;
+
+      default:
+        payload = false;
+        break;
+    }
+
+    console.log(payload.payload.token);
+    return payload;
   };
 
   return {

@@ -51,7 +51,7 @@ const firebaseClient = () => {
       const confirmation = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
-      //setUser(firebase.auth().currentUser);
+      setUser(firebase.auth().currentUser);
       await handleAuth();
 
       return confirmation;
@@ -95,7 +95,7 @@ const firebaseClient = () => {
     const currentUser = firebase.auth().currentUser;
 
     // Send email confirmation for new users
-    if (currentUser.isNewUser && EMAIL_VERIFICATION) {
+    if (!isAuthenticated && EMAIL_VERIFICATION) {
       currentUser.sendEmailVerification();
     }
 
@@ -103,46 +103,7 @@ const firebaseClient = () => {
 
     const user = await authenticateUsingToken();
     return user;
-
-    // // Create the user in the database if they are new
-    // if (additionalUserInfo.isNewUser) {
-    //   await createUser(user.uid, { email: user.email });
-
-    //   // Send email verification if enabled
-    //   if (EMAIL_VERIFICATION) {
-    //     firebase.auth().currentUser.sendEmailVerification();
-    //   }
-    // }
-
-    // // Update user in state
-    // setUser(user);
-    // setIsAuthenticated(true);
   };
-  // // Handle response from authentication functions
-  // const handleAuth = async (response) => {
-  //   // Ensure Firebase is actually ready before we continue
-  //   await waitForFirebase();
-
-  //   const current = firebase.auth().currentUser;
-  //   const token = await current.getIdToken();
-  //   setCurrentToken(token);
-  //   if (isAuthenticated) {
-  //     authenticateUsingToken();
-  //   }
-  //   // const { user, additionalUserInfo } = response;
-
-  //   // // Create the user in the database if they are new
-  //   // if (additionalUserInfo.isNewUser) {
-  //   //   await createUser(user.uid, { email: user.email });
-
-  //   // Send email verification if enabled
-  //   if (EMAIL_VERIFICATION && !isAuthenticated) {
-  //     current.sendEmailVerification();
-  //   }
-  //   // Update user in state
-  //   setUser(current);
-  //   return user;
-  // };
 
   const authenticateUsingToken = async () => {
     try {
