@@ -3,11 +3,16 @@ import ProfileImage from "./image";
 import styles from "../styles/layout.module.css";
 import utilStyles from "../styles/utils.module.css";
 import Link from "next/link";
+import { useAuth } from "members";
+import LogOut from "members/components/auth/logout/LogoutButton";
+import LogIn from "members/components/auth/login/LoginButton";
 
 const name = "Andrei";
 export const siteTitle = "Next.js Sample Website";
 
 const Layout = ({ children, home }) => {
+  const { user } = useAuth();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -29,6 +34,8 @@ const Layout = ({ children, home }) => {
         {home ? (
           <>
             <ProfileImage />
+            {user ? <LogOut></LogOut> : <LogIn></LogIn>}
+
             <h1 className={utilStyles.heading2Xl}>{name}</h1>
           </>
         ) : (
