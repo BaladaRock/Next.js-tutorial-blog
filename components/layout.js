@@ -1,7 +1,7 @@
 import Head from "next/head";
 import ProfileImage from "./image";
-import styles from "../styles/layout.module.css";
-import utilStyles from "../styles/utils.module.css";
+import styles from "styles/layout.module.css";
+import utilStyles from "styles/utils.module.css";
 import Link from "next/link";
 import { useAuth } from "members";
 import LogOut from "members/components/auth/logout/LogoutButton";

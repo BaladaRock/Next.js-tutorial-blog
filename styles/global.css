@@ -26,6 +26,11 @@ img {
   display: block;
 }
 
+button {
+  margin: 1rem;
+  padding: 0.3em;
+}
+
 input[type="text"],
 select {
   width: 100%;
