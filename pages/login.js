@@ -1,16 +1,11 @@
 import formStyles from "styles/form.module.css";
-import { gql, useQuery } from "@apollo/client";
-import { useEffect, useState, useContext } from "react";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useAuth } from "members";
-import Members from "members/provider";
-import Providers from "provider";
-import { User } from "realm-web";
 
 const LoginForm = () => {
   const router = useRouter();
-  const { user, login } = useAuth();
+  const { login } = useAuth();
 
   const { handleSubmit, register } = useForm();
 
