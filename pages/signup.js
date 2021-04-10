@@ -1,7 +1,5 @@
 import formStyles from "styles/form.module.css";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { useEffect, useState, useContext } from "react";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useAuth } from "members";
 

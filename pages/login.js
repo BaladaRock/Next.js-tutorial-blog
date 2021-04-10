@@ -20,10 +20,6 @@ const LoginForm = () => {
     router.push("/");
   };
 
-  // Format date
-  // const date = new Date("2020-01-02");
-  // const moment = require("moment");
-  // console.log(moment(date).format());
   return (
     <div className={formStyles.form}>
       <form onSubmit={handleSubmit(authenticateAndRedirect)}>
