@@ -26,15 +26,17 @@ const firebaseClient = () => {
   }, [currentUser, isAuthenticated]);
 
   // Check if user is still logged in after tokens have refreshed
-  useEffect(
-    () =>
-      firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-          authenticateUsingToken();
-        }
-      }),
-    [currentToken]
-  );
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        authenticateUsingToken();
+      } else {
+        setUser(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [currentToken]);
 
   // Check if the current user is not null and set state if not
   useEffect(() => {
@@ -51,13 +53,12 @@ const firebaseClient = () => {
       const confirmation = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
-      setUser(firebase.auth().currentUser);
       await handleAuth();
 
       return confirmation;
     } catch (e) {
       console.log(e.message);
-      router.push("/login");
+      alert(e);
     }
   };
 
@@ -86,7 +87,7 @@ const firebaseClient = () => {
   };
 
   // Handle response from authentication functions
-  const handleAuth = async (response) => {
+  const handleAuth = async () => {
     //const { user, additionalUserInfo } = response;
 
     // Ensure Firebase is actually ready before we continue
@@ -108,9 +109,11 @@ const firebaseClient = () => {
   const authenticateUsingToken = async () => {
     try {
       const token = await firebase.auth().currentUser.getIdToken();
+      console.log(token);
       authenticate(token);
     } catch (e) {
-      router.push("/login");
+      console.log(e);
+      alert(e);
     }
   };
 

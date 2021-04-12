@@ -1,21 +1,23 @@
 import Head from "next/head";
-import Layout, { siteTitle } from "../components/layout";
+import Layout, { siteTitle } from "components/layout";
 import Link from "next/link";
+import Posts from "components/postsList";
 import utilStyles from "../styles/utils.module.css";
+import { gql, useQuery } from "@apollo/client";
 
 // use posts object by importing the function which
 // reads posts content from their files
-import { getSortedPostsData } from "../util/posts";
 import { useAuth } from "members";
+// import { getSortedPostsData } from "../util/posts";
 
-export async function getStaticProps() {
-  const sortedPosts = getSortedPostsData();
-  return {
-    props: {
-      sortedPosts,
-    },
-  };
-}
+// export async function getStaticProps() {
+//   const sortedPosts = getSortedPostsData();
+//   return {
+//     props: {
+//       sortedPosts,
+//     },
+//   };
+// }
 
 export default function Home({ sortedPosts }) {
   const { user } = useAuth();
@@ -43,7 +45,9 @@ export default function Home({ sortedPosts }) {
       }
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
-        <ul className={utilStyles.list}>
+        <Posts></Posts>
+
+        {/* <ul className={utilStyles.list}>
           {sortedPosts.map(({ id, date, title }) => (
             <li className={utilStyles.listItem} key={id}>
               <Link href={`/posts/${id}`}>
@@ -55,7 +59,7 @@ export default function Home({ sortedPosts }) {
               </small>
             </li>
           ))}
-        </ul>
+        </ul> */}
       </section>
     </Layout>
   );
