@@ -1,10 +1,10 @@
-import { useAuth } from "members";
+import { useRouter } from "next/router";
 
 const LoginButton = ({ children }) => {
-  const { login } = useAuth();
+  const router = useRouter();
 
   const onLogin = () => {
-    login();
+    router.push("/login");
   };
 
   return children ? (

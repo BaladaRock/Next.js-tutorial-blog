@@ -21,6 +21,7 @@ import { useAuth } from "members";
 
 export default function Home({ sortedPosts }) {
   const { user } = useAuth();
+  console.log(user);
 
   return (
     <Layout home>
@@ -29,7 +30,10 @@ export default function Home({ sortedPosts }) {
       </Head>
       <section className={utilStyles.headingMd}>
         {user ? (
-          <span>Current user is: {user.email}</span>
+          <span>
+            Current user is: {user.email} and the entire user object seems to be{" "}
+            {JSON.stringify(user)}
+          </span>
         ) : (
           <span> No user</span>
         )}

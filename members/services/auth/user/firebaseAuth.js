@@ -13,29 +13,24 @@ const firebaseClient = () => {
   const [user, setUser] = useState(null);
   const [currentToken, setCurrentToken] = useState(null);
   const [currentUser, setCurrentUser] = useState(app.currentUser || false);
-  const [isAuthenticated, setIsAuthenticated] = useState(user ? true : false);
 
   // Update the sanitized user object when the current user changes.
 
   useEffect(() => {
-    if (user && user.id === currentUser.id) {
+    if (currentUser /*user && user.id === currentUser.id*/) {
       setUser(sanitizeUserData(currentUser));
 
       return () => setUser(null);
+    } else {
+      setUser(false);
     }
-  }, [currentUser, isAuthenticated]);
+  }, [currentUser]);
 
-  // Check if user is still logged in after tokens have refreshed
+  // Check if user is still logged in after tokens have been refreshed
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        authenticateUsingToken();
-      } else {
-        setUser(false);
-      }
-    });
-
-    return () => unsubscribe();
+    if (currentToken) {
+      authenticate();
+    }
   }, [currentToken]);
 
   // Check if the current user is not null and set state if not
@@ -50,12 +45,10 @@ const firebaseClient = () => {
 
   const login = async (email, password) => {
     try {
-      const confirmation = await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password);
-      await handleAuth();
+      const session = authenticateFirebase(email, password);
+      //await handleAuth(session);
 
-      return confirmation;
+      authenticateUsingToken();
     } catch (e) {
       console.log(e.message);
       alert(e);
@@ -67,67 +60,69 @@ const firebaseClient = () => {
       // Sign out from Realm and Firebase.
       firebase.auth().signOut();
       await app.currentUser?.logOut();
-      setIsAuthenticated(false);
       setUser(null);
     } catch (e) {
-      console.log(e.message);
+      alert(e);
     }
   };
 
   const signup = async (email, password) => {
     try {
-      const confirmation = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-      await handleAuth();
-      return confirmation;
+      const session = await authenticateFirebase(email, password);
+
+      // Send email confirmation for new users
+      if (EMAIL_VERIFICATION) {
+        currentUser.sendEmailVerification();
+      }
+
+      const payload = await handleAuth(session, {
+        firebase,
+        create: memberProfileCreate,
+        update: updateOneMemberProfile,
+      });
+
+      return payload;
     } catch (e) {
-      console.log(e.message);
+      //console.log(e.message);
     }
   };
 
-  // Handle response from authentication functions
-  const handleAuth = async () => {
-    //const { user, additionalUserInfo } = response;
+  const authenticateFirebase = async (email, password) => {
+    await firebase.auth().createUserWithEmailAndPassword(email, password);
+  };
+
+  const handleAuth = async (response, { firebase, create, update }) => {
+    const {
+      user,
+      additionalUserInfo: { isNewUser, profile },
+    } = response;
 
     // Ensure Firebase is actually ready before we continue
-    await waitForFirebase();
+    await waitForFirebase(firebase);
 
-    const currentUser = firebase.auth().currentUser;
-
-    // Send email confirmation for new users
-    if (!isAuthenticated && EMAIL_VERIFICATION) {
-      currentUser.sendEmailVerification();
-    }
-
-    // Authenticate user
-
-    const user = await authenticateUsingToken();
-    return user;
+    return { user, isNewUser };
   };
 
   const authenticateUsingToken = async () => {
     try {
       const token = await firebase.auth().currentUser.getIdToken();
-      console.log(token);
-      authenticate(token);
+      setCurrentToken(token);
+      authenticate();
     } catch (e) {
-      console.log(e);
+      //console.log(e);
       alert(e);
     }
   };
 
-  const authenticate = async (token) => {
+  const authenticate = async () => {
     try {
       const creds = await credentials({
         type: "jwt",
-        value: token,
+        value: currentToken,
       });
 
       await app.logIn(creds);
-
       setCurrentUser(app.currentUser);
-      setIsAuthenticated(true);
     } catch (e) {
       throw e;
     }

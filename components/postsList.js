@@ -11,7 +11,7 @@ import { gql, useQuery } from "@apollo/client";
 const Posts = () => {
   const { user } = useAuth();
   const query = gql`
-    query posts($_id: ObjectId!) {
+    query($_id: ObjectId!) {
       posts(query: { user: { _id: $_id } }) {
         info {
           title
@@ -25,22 +25,26 @@ const Posts = () => {
   const sortedPosts = useQuery(query, {
     variables: { _id: "605cbcca08344a46c9fd84c4" },
   });
-  console.log(sortedPosts);
+  const test = useQuery(query);
+  console.log(`The sorted posts list is: ${sortedPosts}`);
+  console.log(`Another test for the user object is ${test}`);
 
   return (
     <ul className={utilStyles.list}>
-      <li className={utilStyles.listItem}>{/* <div>{sortedPosts}</div> */}</li>
-      {/* {sortedPosts.map(({ id, date, title }) => (
+      <li className={utilStyles.listItem}>
+        {/* <div>{sortedPosts.variables}</div> */}
+      </li>
+      {/* { {sortedPosts.map(({ id, date, title }) => (
         <li className={utilStyles.listItem} key={id}>
           <Link href={`/posts/${id}`}>
-            <a>{title}</a>
+            <a>{sortedPosts.variables.info.titlet}</a>
           </Link>
           <br />
           <small className={utilStyles.lightText}>
-            <Date dateString={date} />
+            <Date dateString={sortedPosts.variables.info.created_at} />
           </small>
         </li>
-      ))} */}
+      ))} } */}
     </ul>
   );
 };
