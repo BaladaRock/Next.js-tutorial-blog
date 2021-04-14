@@ -8,16 +8,18 @@ import Members from "members/provider";
 import Providers from "provider";
 import { User } from "realm-web";
 import { Token } from "graphql";
+import { useRealm } from "services";
 
 const LoginForm = () => {
   const router = useRouter();
+  const { credentials } = useRealm();
   const { user, login } = useAuth();
 
   const { handleSubmit, register } = useForm();
 
   const authenticateAndRedirect = (form) => {
     console.log(form.email, form.password);
-    login();
+    login(form.email, form.password);
     router.push("/");
   };
 

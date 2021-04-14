@@ -18,7 +18,8 @@ const firebaseClient = () => {
 
   useEffect(() => {
     if (currentUser /*user && user.id === currentUser.id*/) {
-      setUser(sanitizeUserData(currentUser));
+      const data = sanitizeUserData(currentUser);
+      setUser(data);
 
       return () => setUser(null);
     } else {
@@ -35,22 +36,23 @@ const firebaseClient = () => {
 
   // Check if the current user is not null and set state if not
   useEffect(() => {
-    const currentUser = firebase.auth().currentUser;
-    if (currentUser && !currentUser.getIdToken()) {
-      setCurrentToken(currentUser.getIdToken());
-    }
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user && !currentToken) {
+        user.getIdToken().then(setCurrentToken);
+      }
+    });
   }, []);
 
   // Login and logout using email/password.
 
   const login = async (email, password) => {
     try {
-      const session = authenticateFirebase(email, password);
-      //await handleAuth(session);
-
-      authenticateUsingToken();
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      const token = await firebase.auth().currentUser.getIdToken(true);
+      setCurrentToken(token);
+      //setCurrentUser(app.currentUser);
     } catch (e) {
-      console.log(e.message);
+      console.log(e);
       alert(e);
     }
   };
@@ -58,9 +60,10 @@ const firebaseClient = () => {
   const logout = async () => {
     try {
       // Sign out from Realm and Firebase.
-      firebase.auth().signOut();
-      await app.currentUser?.logOut();
+      await firebase.auth().signOut();
       setUser(null);
+      await app.currentUser?.logOut();
+      setCurrentUser(null);
     } catch (e) {
       alert(e);
     }
@@ -99,6 +102,15 @@ const firebaseClient = () => {
 
     // Ensure Firebase is actually ready before we continue
     await waitForFirebase(firebase);
+
+    // Create the user in the database if they are new
+    if (isNewUser) {
+      // Set the member default values.
+      await setMemberDefaults(user.uid, user.email, profile || {}, {
+        create,
+        update,
+      });
+    }
 
     return { user, isNewUser };
   };

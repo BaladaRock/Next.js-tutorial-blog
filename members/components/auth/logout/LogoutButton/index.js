@@ -1,10 +1,11 @@
 import { useAuth } from "members";
 
 const LogoutButton = ({ children }) => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   const onLogout = () => {
-    logout({ returnTo: window.location.origin });
+    logout();
+    console.log(`After logging in: ${user}`);
   };
 
   return children ? (
