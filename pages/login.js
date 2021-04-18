@@ -18,7 +18,6 @@ const LoginForm = () => {
   const { handleSubmit, register } = useForm();
 
   const authenticateAndRedirect = (form) => {
-    console.log(form.email, form.password);
     login(form.email, form.password);
     router.push("/");
   };

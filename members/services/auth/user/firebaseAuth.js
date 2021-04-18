@@ -50,7 +50,8 @@ const firebaseClient = () => {
       await firebase.auth().signInWithEmailAndPassword(email, password);
       const token = await firebase.auth().currentUser.getIdToken(true);
       setCurrentToken(token);
-      //setCurrentUser(app.currentUser);
+      authenticate();
+      console.log("The current user test:", app.currentUser);
     } catch (e) {
       console.log(e);
       alert(e);

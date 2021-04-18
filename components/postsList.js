@@ -7,12 +7,16 @@ import LogOut from "members/components/auth/logout/LogoutButton";
 import LogIn from "members/components/auth/login/LoginButton";
 import { useAuth } from "members";
 import { gql, useQuery } from "@apollo/client";
+import { useRealm } from "services/Realm";
+import { useEffect, useMemo, useState } from "react";
 
 const Posts = () => {
   const { user } = useAuth();
+  const { app } = useRealm();
+
   const query = gql`
-    query($_id: ObjectId!) {
-      posts(query: { user: { _id: $_id } }) {
+    query($query: PostQueryInput!) {
+      posts(query: $query) {
         info {
           title
           created_at
@@ -22,29 +26,51 @@ const Posts = () => {
     }
   `;
 
-  const sortedPosts = useQuery(query, {
-    variables: { _id: "605cbcca08344a46c9fd84c4" },
+  const { loading, data, error } = useQuery(query, {
+    variables: {
+      skip: !user,
+      query: {
+        user: {
+          id: user && user._id,
+        },
+      },
+    },
   });
-  const test = useQuery(query);
-  console.log(`The sorted posts list is: ${sortedPosts}`);
-  console.log(`Another test for the user object is ${test}`);
+
+  const [posts, setPosts] = useState(null);
+
+  useEffect(() => {
+    // do some checking here to ensure data exist
+    if (data) {
+      // mutate data if you need to
+      setPosts(data);
+    }
+  }, [data]);
+
+  if (loading) return <div>...Loading</div>;
+  if (error) {
+    console.log(error);
+    return <div>Some error occurred</div>;
+  }
+
+  console.log(`Current user id is: ${app.currentUser.id}`);
+  console.log(`The current user is:  ${JSON.stringify(app.currentUser)}`);
+  console.log(`The sorted posts list is: `, posts);
 
   return (
     <ul className={utilStyles.list}>
-      <li className={utilStyles.listItem}>
-        {/* <div>{sortedPosts.variables}</div> */}
-      </li>
-      {/* { {sortedPosts.map(({ id, date, title }) => (
+      <div>{JSON.stringify(posts)}</div>
+      {/* {posts.map(({ id, date, title }) => (
         <li className={utilStyles.listItem} key={id}>
           <Link href={`/posts/${id}`}>
-            <a>{sortedPosts.variables.info.titlet}</a>
+            <a>{posts.variables.info.titlet}</a>
           </Link>
           <br />
           <small className={utilStyles.lightText}>
-            <Date dateString={sortedPosts.variables.info.created_at} />
+            <Date dateString={posts.variables.info.created_at} />
           </small>
         </li>
-      ))} } */}
+      ))} */}
     </ul>
   );
 };
