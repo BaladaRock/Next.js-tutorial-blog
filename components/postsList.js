@@ -13,6 +13,13 @@ import { useEffect, useMemo, useState } from "react";
 const Posts = () => {
   const { user } = useAuth();
   const { app } = useRealm();
+  const [sortedPosts, setSortedPosts] = useState(null);
+
+  const getPostsArray = () => {
+    return sortedPosts
+      ? Object.keys(sortedPosts).map((key) => [Number(key), sortedPosts[key]])
+      : null;
+  };
 
   const query = gql`
     query($query: PostQueryInput!) {
@@ -37,13 +44,11 @@ const Posts = () => {
     },
   });
 
-  const [posts, setPosts] = useState(null);
-
   useEffect(() => {
     // do some checking here to ensure data exist
     if (data) {
       // mutate data if you need to
-      setPosts(data);
+      setSortedPosts(data);
     }
   }, [data]);
 
@@ -55,22 +60,25 @@ const Posts = () => {
 
   console.log(`Current user id is: ${app.currentUser.id}`);
   console.log(`The current user is:  ${JSON.stringify(app.currentUser)}`);
-  console.log(`The sorted posts list is: `, posts);
+  console.log(
+    `The sorted posts list is: `,
+    sortedPosts ? sortedPosts.posts : "Waiting"
+  );
 
   return (
     <ul className={utilStyles.list}>
-      <div>{JSON.stringify(posts)}</div>
-      {/* {posts.map(({ id, date, title }) => (
-        <li className={utilStyles.listItem} key={id}>
-          <Link href={`/posts/${id}`}>
-            <a>{posts.variables.info.titlet}</a>
-          </Link>
-          <br />
-          <small className={utilStyles.lightText}>
-            <Date dateString={posts.variables.info.created_at} />
-          </small>
-        </li>
-      ))} */}
+      {sortedPosts &&
+        sortedPosts.posts.map((current) => (
+          <li className={utilStyles.listItem} key={current._id}>
+            <Link href={`/posts/${current._id}`}>
+              <a>{current.info.title}</a>
+            </Link>
+            <br />
+            <small className={utilStyles.lightText}>
+              <Date dateString={current.info.created_at} />
+            </small>
+          </li>
+        ))}
     </ul>
   );
 };
