@@ -29,14 +29,6 @@ export default function Home({ sortedPosts }) {
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
-        {user ? (
-          <span>
-            Current user is: {user.email} and the entire user object seems to be{" "}
-            {JSON.stringify(user)}
-          </span>
-        ) : (
-          <span> No user</span>
-        )}
         <p>Hi, I'm Andrei! Here is my first Next.js sample app.</p>
         <p>
           Click here to go to the tutorial's main page{" "}
@@ -50,20 +42,6 @@ export default function Home({ sortedPosts }) {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <Posts></Posts>
-
-        {/* <ul className={utilStyles.list}>
-          {sortedPosts.map(({ id, date, title }) => (
-            <li className={utilStyles.listItem} key={id}>
-              <Link href={`/posts/${id}`}>
-                <a>{title}</a>
-              </Link>
-              <br />
-              <small className={utilStyles.lightText}>
-                <Date dateString={date} />
-              </small>
-            </li>
-          ))}
-        </ul> */}
       </section>
     </Layout>
   );

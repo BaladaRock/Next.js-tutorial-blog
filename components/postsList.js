@@ -49,28 +49,26 @@ const Posts = () => {
   }, [data]);
 
   if (loading) return <div>...Loading</div>;
-  if (error) {
-    console.log(error);
-    return <div>Some error occurred</div>;
-  }
 
   return (
-    <ul className={utilStyles.list}>
-      {sortedPosts &&
-        sortedPosts.posts.map((current) => (
-          <li className={utilStyles.listItem} key={current._id}>
-            <Link href={`/posts/${current._id}`}>
-              <a>{current.info.title}</a>
-            </Link>
-            <br />
-            <small className={utilStyles.lightText}>
-              <div>
-                {moment(current.info.created_at).format("LLLL d, yyyy")}
-              </div>
-            </small>
-          </li>
-        ))}
-    </ul>
+    user && (
+      <ul className={utilStyles.list}>
+        {sortedPosts &&
+          sortedPosts.posts.map((current) => (
+            <li className={utilStyles.listItem} key={current._id}>
+              <Link href={`/posts/${current._id}`}>
+                <a>{current.info.title}</a>
+              </Link>
+              <br />
+              <small className={utilStyles.lightText}>
+                <div>
+                  {moment(current.info.created_at).format("LLLL d, yyyy")}
+                </div>
+              </small>
+            </li>
+          ))}
+      </ul>
+    )
   );
 };
 
