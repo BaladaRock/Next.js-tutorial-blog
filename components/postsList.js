@@ -19,6 +19,7 @@ const Posts = () => {
   const query = gql`
     query($query: PostQueryInput!) {
       posts(query: $query) {
+        _id
         info {
           title
           created_at
@@ -52,13 +53,6 @@ const Posts = () => {
     console.log(error);
     return <div>Some error occurred</div>;
   }
-
-  console.log(`Current user id is: ${app.currentUser.id}`);
-  console.log(`The current user is:  ${JSON.stringify(app.currentUser)}`);
-  console.log(
-    `The sorted posts list is: `,
-    sortedPosts ? sortedPosts.posts : "Waiting"
-  );
 
   return (
     <ul className={utilStyles.list}>
