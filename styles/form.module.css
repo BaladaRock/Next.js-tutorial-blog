@@ -23,6 +23,11 @@
   width: 20em;
 }
 
+.title {
+  outline: none;
+  border: 0px;
+}
+
 .scroll {
   scrollbar-width: none;
   -ms-overflow-style: none;

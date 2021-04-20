@@ -7,10 +7,15 @@ import formStyles from "styles/form.module.css";
 import { gql, useQuery } from "@apollo/client";
 
 import { useAuth } from "members";
+import { useRealm } from "services";
+import { useForm } from "react-hook-form";
 
 export default function Home({ sortedPosts }) {
   const { user } = useAuth();
-  console.log(user);
+  const { handleSubmit, register } = useForm();
+  const createPost = (form) => {
+    return null;
+  };
 
   return (
     <Layout home>
@@ -24,12 +29,21 @@ export default function Home({ sortedPosts }) {
           <a href="https://nextjs.org/learn">Next.js tutorial</a>.
         </p>
         <div className={formStyles.content}>
-          <form onSubmit={() => null}>
+          <form onSubmit={handleSubmit(createPost)}>
+            <input
+              className={formStyles.title}
+              type="text"
+              name="title"
+              ref={register()}
+              placeholder="Enter post title"
+            />
             <div>
               <p>Type something:</p>
             </div>
             <textarea
               className={` ${formStyles.textbox} ${formStyles.scroll} ${formStyles.scroller}`}
+              name="content"
+              ref={register()}
             ></textarea>
 
             <input type="submit" value="Create new post" />

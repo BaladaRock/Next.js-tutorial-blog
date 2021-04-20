@@ -4,6 +4,7 @@ import { useEffect, useState, useContext } from "react";
 import { Router, useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { useAuth } from "members";
+import { useForm } from "react-hook-form";
 
 const SignUpForm = () => {
   const router = useRouter();
