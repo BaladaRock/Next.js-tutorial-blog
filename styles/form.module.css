@@ -1,6 +1,33 @@
 .form {
-  max-width: 60%;
+  max-width: 40%;
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
+  margin: 2em 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.textbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20em;
+  width: 20em;
+}
+
+.scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
 }

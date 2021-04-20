@@ -2,22 +2,11 @@ import Head from "next/head";
 import Layout, { siteTitle } from "components/layout";
 import Link from "next/link";
 import Posts from "components/postsList";
-import utilStyles from "../styles/utils.module.css";
+import utilStyles from "styles/utils.module.css";
+import formStyles from "styles/form.module.css";
 import { gql, useQuery } from "@apollo/client";
 
-// use posts object by importing the function which
-// reads posts content from their files
 import { useAuth } from "members";
-// import { getSortedPostsData } from "../util/posts";
-
-// export async function getStaticProps() {
-//   const sortedPosts = getSortedPostsData();
-//   return {
-//     props: {
-//       sortedPosts,
-//     },
-//   };
-// }
 
 export default function Home({ sortedPosts }) {
   const { user } = useAuth();
@@ -34,11 +23,20 @@ export default function Home({ sortedPosts }) {
           Click here to go to the tutorial's main page{" "}
           <a href="https://nextjs.org/learn">Next.js tutorial</a>.
         </p>
+        <div className={formStyles.content}>
+          <form onSubmit={() => null}>
+            <div>
+              <p>Type something:</p>
+            </div>
+            <textarea
+              className={` ${formStyles.textbox} ${formStyles.scroll} ${formStyles.scroller}`}
+            ></textarea>
+
+            <input type="submit" value="Create new post" />
+          </form>
+        </div>
       </section>
-      {
-        // The following section renders all the posts data.
-        // It also uses the NextJS "Link" component to connect each post with the home page.
-      }
+
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Blog</h2>
         <Posts></Posts>
