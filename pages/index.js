@@ -4,17 +4,57 @@ import Link from "next/link";
 import Posts from "components/postsList";
 import utilStyles from "styles/utils.module.css";
 import formStyles from "styles/form.module.css";
-import { gql, useQuery } from "@apollo/client";
+import moment from "moment";
+import { gql, useQuery, useMutation } from "@apollo/client";
 
 import { useAuth } from "members";
-import { useRealm } from "services";
+import { useRealm } from "services/Realm";
 import { useForm } from "react-hook-form";
 
 export default function Home({ sortedPosts }) {
   const { user } = useAuth();
-  const { handleSubmit, register } = useForm();
-  const createPost = (form) => {
-    return null;
+  const { app } = useRealm();
+  console.log("The user: ", user ? user._id : "");
+  const { handleSubmit, control, register } = useForm();
+
+  const CREATE_POST = gql`
+    mutation insertOnePost($data: PostInsertInput!) {
+      insertOnePost(data: $data) {
+        _id
+        info {
+          created_at
+          title
+        }
+        content
+        user {
+          _id
+        }
+      }
+    }
+  `;
+  const [addNewPost, { loading }] = useMutation(CREATE_POST);
+
+  const newPostHandler = (form) => {
+    const formTitle = form.title;
+    const formContent = form.content;
+    if (!loading) {
+      if (user) {
+        addNewPost({
+          variables: {
+            data: {
+              user: {
+                link: user._id,
+              },
+              info: {
+                title: formTitle,
+                created_at: moment().toDate(),
+              },
+              content: formContent,
+            },
+          },
+        });
+      }
+    }
   };
 
   return (
@@ -29,7 +69,7 @@ export default function Home({ sortedPosts }) {
           <a href="https://nextjs.org/learn">Next.js tutorial</a>.
         </p>
         <div className={formStyles.content}>
-          <form onSubmit={handleSubmit(createPost)}>
+          <form onSubmit={handleSubmit(newPostHandler)}>
             <input
               className={formStyles.title}
               type="text"
@@ -44,6 +84,7 @@ export default function Home({ sortedPosts }) {
               className={` ${formStyles.textbox} ${formStyles.scroll} ${formStyles.scroller}`}
               name="content"
               ref={register()}
+              control={control}
             ></textarea>
 
             <input type="submit" value="Create new post" />

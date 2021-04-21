@@ -16,6 +16,7 @@ const Posts = () => {
   const { app } = useRealm();
   const [sortedPosts, setSortedPosts] = useState(null);
 
+  console.log("Does the user id exist? ", user ? user._id : "");
   const query = gql`
     query($query: PostQueryInput!) {
       posts(query: $query) {
@@ -34,14 +35,14 @@ const Posts = () => {
       skip: !user,
       query: {
         user: {
-          id: user && user._id,
+          _id: user && user._id,
         },
       },
     },
   });
 
   useEffect(() => {
-    // do some checking here to ensure data exist
+    // do some checking here to ensure that data exist
     if (data) {
       // mutate data if you need to
       setSortedPosts(data);
