@@ -6,15 +6,15 @@ import utilStyles from "styles/utils.module.css";
 import formStyles from "styles/form.module.css";
 import moment from "moment";
 import { gql, useQuery, useMutation } from "@apollo/client";
-
 import { useAuth } from "members";
 import { useRealm } from "services/Realm";
 import { useForm } from "react-hook-form";
 
-export default function Home({ sortedPosts }) {
+const Home = ({ sortedPosts }) => {
   const { user } = useAuth();
-  const { app } = useRealm();
-  console.log("The user: ", user ? user._id : "");
+  const { app, credentials } = useRealm();
+  console.log("The user: ", user);
+  console.log("Date test", moment().format("LLLL d, yyyy"));
   const { handleSubmit, control, register } = useForm();
 
   const CREATE_POST = gql`
@@ -37,24 +37,18 @@ export default function Home({ sortedPosts }) {
   const newPostHandler = (form) => {
     const formTitle = form.title;
     const formContent = form.content;
-    if (!loading) {
-      if (user) {
-        addNewPost({
-          variables: {
-            data: {
-              user: {
-                link: user._id,
-              },
-              info: {
-                title: formTitle,
-                created_at: moment().toDate(),
-              },
-              content: formContent,
-            },
+
+    addNewPost({
+      variables: {
+        data: {
+          info: {
+            title: formTitle,
+            created_at: moment().toDate(),
           },
-        });
-      }
-    }
+          content: formContent,
+        },
+      },
+    });
   };
 
   return (
@@ -98,4 +92,6 @@ export default function Home({ sortedPosts }) {
       </section>
     </Layout>
   );
-}
+};
+
+export default Home;

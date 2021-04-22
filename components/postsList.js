@@ -6,7 +6,7 @@ import moment from "moment";
 import Link from "next/link";
 import LogOut from "members/components/auth/logout/LogoutButton";
 import LogIn from "members/components/auth/login/LoginButton";
-import { useAuth } from "members";
+import { useAuth, requireAuth } from "members";
 import { gql, useQuery } from "@apollo/client";
 import { useRealm } from "services/Realm";
 import { useEffect, useMemo, useState } from "react";
@@ -17,6 +17,7 @@ const Posts = () => {
   const [sortedPosts, setSortedPosts] = useState(null);
 
   console.log("Does the user id exist? ", user ? user._id : "");
+  console.log("Is this the user?", user);
   const query = gql`
     query($query: PostQueryInput!) {
       posts(query: $query) {
@@ -40,6 +41,10 @@ const Posts = () => {
       },
     },
   });
+
+  useEffect(() => {
+    console.log("This is the user ID, hopefully: ", user?._id ?? "");
+  }, [user]);
 
   useEffect(() => {
     // do some checking here to ensure that data exist
@@ -73,4 +78,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default requireAuth(Posts);

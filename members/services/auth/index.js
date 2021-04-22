@@ -28,7 +28,7 @@ const requireAuth = (Component) => (props) => {
   ) : user ? (
     <Component {...props} />
   ) : (
-    "You must login to view this page"
+    "You must login to view this content"
   );
 };
 
