@@ -74,20 +74,16 @@ const firebaseClient = () => {
     try {
       const session = await authenticateFirebase(email, password);
 
+      const payload = await handleAuth();
+
       // Send email confirmation for new users
       if (EMAIL_VERIFICATION) {
         currentUser.sendEmailVerification();
       }
 
-      const payload = await handleAuth(session, {
-        firebase,
-        create: memberProfileCreate,
-        update: updateOneMemberProfile,
-      });
-
       return payload;
     } catch (e) {
-      //console.log(e.message);
+      console.log(e.message);
     }
   };
 
@@ -95,7 +91,7 @@ const firebaseClient = () => {
     await firebase.auth().createUserWithEmailAndPassword(email, password);
   };
 
-  const handleAuth = async (response, { firebase, create, update }) => {
+  const handleAuth = async (response) => {
     const {
       user,
       additionalUserInfo: { isNewUser, profile },
@@ -107,13 +103,11 @@ const firebaseClient = () => {
     // Create the user in the database if they are new
     if (isNewUser) {
       // Set the member default values.
-      await setMemberDefaults(user.uid, user.email, profile || {}, {
-        create,
-        update,
-      });
+      //await createUser(user., { email: user.email });
     }
 
-    return { user, isNewUser };
+    setCurrentUser(firebase.auth().currentUser);
+    return { user };
   };
 
   const authenticateUsingToken = async () => {
@@ -122,7 +116,7 @@ const firebaseClient = () => {
       setCurrentToken(token);
       authenticate();
     } catch (e) {
-      //console.log(e);
+      //console.log(e);60647c48901b8fa3eb2b76bcy
       alert(e);
     }
   };
